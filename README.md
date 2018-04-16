@@ -14,7 +14,7 @@
 ## Installation
 It's quite simple:
 ```bash
-cd path_project_root
+cd path_to_project_root
 chmod +x setup.sh
 ./setup.sh
 
