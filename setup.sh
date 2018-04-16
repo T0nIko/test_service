@@ -18,6 +18,12 @@ else
     echo "Using $pip_version"
 fi
 
+if ! [ -x $(command -v sqlite3) ];
+then
+    echo "SQLite3 is not available."
+    exit -1
+fi
+
 requirements=./requirements.txt
 
 if ! [ -r $requirements ];

@@ -1,7 +1,7 @@
 from flask.views import MethodView
-from flask import request, render_template, redirect, url_for
+from flask import request, render_template, jsonify
 
-import json
+from .models import UserModel
 
 
 class IndexView(MethodView):
@@ -11,8 +11,25 @@ class IndexView(MethodView):
         return render_template(self.template_name)
 
 
-class ApiView(MethodView):
+class ApiStringQueryView(MethodView):
     def get(self, query):
-        print(query)
-        return redirect(url_for('index'))
+        if query is not None:
+            params = {
+                elem.split('=')[0]: elem.split('=')[1]
+                for elem in query.split(',')
+            }
+            res = UserModel.query.filter_by(**params).all()
+        else:
+            res = UserModel.query.all()
 
+        return jsonify([obj.serialize for obj in res])
+
+
+class ApiView(MethodView):
+    def post(self):
+        if request.json:
+            res = UserModel.query.filter_by(**request.json).all()
+        else:
+            res = UserModel.query.all()
+
+        return jsonify([obj.serialize for obj in res])
