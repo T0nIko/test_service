@@ -15,7 +15,7 @@ def plug_urls(app):
         methods=[
             'GET',
         ],
-        defaults = {
+        defaults={
             'query': None
         }
     )

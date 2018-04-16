@@ -15,7 +15,7 @@
 It's quite simple:
 ```bash
 cd path_to_project_root
-chmod +x setup.sh
+chmod +x setup.sh  # just a reminder to make .sh files executable :)
 ./setup.sh
 
 ```
