@@ -13,23 +13,49 @@ class IndexView(MethodView):
 
 class ApiStringQueryView(MethodView):
     def get(self, query):
-        if query is not None:
-            params = {
-                elem.split('=')[0]: elem.split('=')[1]
-                for elem in query.split(',')
-            }
-            res = UserModel.query.filter_by(**params).all()
-        else:
-            res = UserModel.query.all()
+        try:
+            if query is not None:
+                params = {
+                    elem.split('=')[0]: elem.split('=')[1]
+                    for elem in query.split(',')
+                }
+                res = UserModel.query.filter_by(**params).all()
+            else:
+                res = UserModel.query.all()
 
-        return jsonify([obj.serialize for obj in res])
+            return jsonify(
+                {
+                    'status': 200,
+                    'users': [obj.serialize for obj in res]
+                }
+            )
+        except:
+            return jsonify(
+                {
+                    'status': 418,
+                    'users': 'Don\'t ask me. I\'m a teapot.'
+                }
+            )
 
 
 class ApiView(MethodView):
     def post(self):
-        if request.json:
-            res = UserModel.query.filter_by(**request.json).all()
-        else:
-            res = UserModel.query.all()
+        try:
+            if request.json:
+                res = UserModel.query.filter_by(**request.json).all()
+            else:
+                res = UserModel.query.all()
 
-        return jsonify([obj.serialize for obj in res])
+            return jsonify(
+                {
+                    'status': 200,
+                    'users': [obj.serialize for obj in res]
+                }
+            )
+        except:
+            return jsonify(
+                {
+                    'status': 418,
+                    'users': 'Don\'t ask me. I\'m a teapot.'
+                }
+            )
